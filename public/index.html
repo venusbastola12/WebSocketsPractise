@@ -18,6 +18,7 @@
       const sendButton = document.getElementById("sendBtn");
       const allMessages = document.getElementById("messages");
       socket.on("message", (message) => {
+        //here when the client socket gets event called message then it is displayed on the frontend
         const p = document.createElement("p");
         p.innerText = message;
         allMessages.appendChild(p);
