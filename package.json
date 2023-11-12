@@ -1,0 +1,16 @@
+{
+  "name": "websocketpractise",
+  "version": "1.0.0",
+  "description": "practising web sockets",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Venus Bastola",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  }
+}
