@@ -28,7 +28,13 @@
         e.preventDefault();
         const message = messageField.value;
         //console.log(message);
-        socket.emit("user-message", message);
+        socket.timeout(5000).emit("user-message", message, (err, res) => {
+          if (err) {
+            console.log("no acknowledgement received from the server");
+          } else {
+            console.log(res.status);
+          }
+        });
         messageField.value = "";
       });
     </script>
