@@ -14,10 +14,18 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   // when the socket server is connected to any client or sockets then we apply following
   socket.on("user-message", async (message) => {
+    //use of socket#conn
+    console.log("initial transport:", socket.conn.transport.name);
+    socket.conn.once("upgrade", () => {
+      console.log("upgraded transport", socket.conn.transport.name);
+    });
     console.log("new message from user:", message);
     io.emit("message", message); //it is used to emit message to all the client connected to the host
     const sockets = await io.fetchSockets();
-    console.log("connected sockets are:", sockets);
+    console.log("no of connected clients are:", io.engine.clientsCount);
+    for (socket of sockets) {
+      console.log(socket.id, socket.rooms);
+    }
   });
   // socket.on("disconnect", () => {
   //   console.log("user disconnected from this tab");
@@ -38,6 +46,17 @@ io.engine.on("headers", (headers) => {
 io.engine.on("connection_error", (err) => {
   //connection_error is the event emitted when an abnormal disconnection is occured.
   console.log(err);
+});
+
+//middlewares..
+//socket instance is not actually connected when the middlewares are being executed so the disconnect event is not emitted.
+io.use((socket, next) => {
+  console.log("first middleware");
+  next();
+});
+io.use((socket, next) => {
+  //middleware stack is run in the same way as it doe
+  next();
 });
 
 app.get("/", (req, res) => {
